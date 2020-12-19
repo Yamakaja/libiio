@@ -49,6 +49,14 @@ static const char * const iio_chan_type_name_spec[] = {
 	[IIO_POSITIONRELATIVE] = "positionrelative",
 	[IIO_PHASE] = "phase",
 	[IIO_MASSCONCENTRATION] = "massconcentration",
+	[HWMON_VOLTAGE] = "voltage",
+	[HWMON_FAN] = "fan",
+	[HWMON_PWM] = "pwm",
+	[HWMON_TEMP] = "temp",
+	[HWMON_CURRENT] = "current",
+	[HWMON_POWER] = "power",
+	[HWMON_ENERGY] = "energy",
+	[HWMON_HUMIDITY] = "humidity",
 };
 
 static const char * const modifier_names[] = {
@@ -130,14 +138,22 @@ unsigned int find_channel_modifier(const char *s, size_t *len_p)
  */
 void iio_channel_init_finalize(struct iio_channel *chn)
 {
-	unsigned int i;
+	unsigned int i, start, end;
 	size_t len;
 	char *mod;
 
-	chn->type = IIO_CHAN_TYPE_UNKNOWN;
+	if (chn->dev->type == HWMON_TYPE_DEVICE) {
+		chn->type = HWMON_CHAN_TYPE_UNKNOWN;
+		start = HWMON_CHAN_TYPE_BEGIN;
+		end = ARRAY_SIZE(iio_chan_type_name_spec);
+	} else {
+		chn->type = IIO_CHAN_TYPE_UNKNOWN;
+		start = 0;
+		end = IIO_CHAN_TYPE_END;
+	}
 	chn->modifier = IIO_NO_MOD;
 
-	for (i = 0; i < ARRAY_SIZE(iio_chan_type_name_spec); i++) {
+	for (i = start; i < end; i++) {
 		len = strlen(iio_chan_type_name_spec[i]);
 		if (strncmp(iio_chan_type_name_spec[i], chn->id, len) != 0)
 			continue;

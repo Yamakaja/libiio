@@ -17,6 +17,11 @@ enum iio_backend_api_ver {
 	IIO_BACKEND_API_V1 = 1,
 };
 
+enum backend_type {
+	IIO_TYPE_DEVICE = 0,
+	HWMON_TYPE_DEVICE,
+};
+
 enum iio_attr_type {
 	IIO_ATTR_TYPE_DEVICE = 0,
 	IIO_ATTR_TYPE_DEBUG,

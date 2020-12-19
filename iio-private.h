@@ -180,6 +180,7 @@ struct iio_device {
 	void *userdata;
 
 	char *name, *id, *label;
+	enum backend_type type;
 
 	struct iio_dev_attrs attrs;
 	struct iio_dev_attrs buffer_attrs;
