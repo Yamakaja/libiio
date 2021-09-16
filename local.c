@@ -1151,11 +1151,22 @@ static bool is_channel(const struct iio_device *dev, const char *attr, bool stri
 	char *ptr = NULL;
 
 	if (dev->type == HWMON_TYPE_DEVICE) {
-		if (!strncmp(attr, "temp", 4))
+		/* https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface */
+		if(!strncmp(attr, "in", 2))
+			return true;
+		if (!strncmp(attr, "fan", 3))
 			return true;
 		if (!strncmp(attr, "pwm", 3))
 			return true;
-		if (!strncmp(attr, "fan", 3))
+		if (!strncmp(attr, "temp", 4))
+			return true;
+		if(!strncmp(attr, "curr", 4))
+			return true;
+		if(!strncmp(attr, "power", 5))
+			return true;
+		if(!strncmp(attr, "energy", 6))
+			return true;
+		if(!strncmp(attr, "humidity", 8))
 			return true;
 		return false;
 	}
